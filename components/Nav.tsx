@@ -5,15 +5,15 @@ import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { signIn, signOut, useSession, getProviders } from 'next-auth/react'
 export default function Nav() {
-    const isUserLoggedIn = true
-    const [loggingProviders, setLoggingProviders] = useState(null)
+    const { data: session } = useSession()
+    const [loggingProviders, setLoggingProviders] = useState<any>(null)
     const [toggleDropDown, setToggleDropDown] = useState(false)
     useEffect(() => {
         const setProviders = async () => {
             const response = await getProviders()
             setLoggingProviders(response)
         }
-        setProviders()
+        (async () => await setProviders())()
     }, [])
     return (
         <nav className='flex-between w-full mb-16 pt-3'>
@@ -32,7 +32,7 @@ export default function Nav() {
             </Link>
             {/* Desktop Navigation */}
             <div className="sm:flex hidden">
-                {isUserLoggedIn ? (
+                {session?.user ? (
                     <div className='flex gap-3 md:gap-5'>
                         <Link
                             href={"/create-prompt"}
@@ -41,14 +41,14 @@ export default function Nav() {
                             Create Post
                         </Link>
 
-                        <button type='button' onClick={signOut}
+                        <button type='button' onClick={() => signOut()}
                             className='outline_btn'
                         >
                             Sign Out
                         </button>
                         <Link href={"/profile"}>
                             <Image
-                                src={"/assets/images/logo.svg"}
+                                src={session?.user?.image || "/assets/images/profile.svg"}
                                 alt='Profile'
                                 width={37}
                                 height={37}
@@ -76,10 +76,10 @@ export default function Nav() {
             {/* Mobile Navigation */}
             <div className='sm:hidden flex relative'>
                 {
-                    isUserLoggedIn ? (
+                    session?.user ? (
                         <div className="flex">
                             <Image
-                                src={"/assets/images/logo.svg"}
+                                src={session?.user?.image || "/assets/images/profile.svg"}
                                 alt='Profile'
                                 width={37}
                                 height={37}
