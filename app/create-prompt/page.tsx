@@ -4,14 +4,6 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Form from '@components/Form'
 import { useSession } from 'next-auth/react'
-type CustomSession = {
-    user: {
-        sessionId: string,
-        name: string,
-        email: string,
-        image: string,
-    }
-}
 export default function CreatePrompt() {
     const [submitting, setSubmitting] = useState<boolean>(false)
     const [post, setPost] = useState<Prompt>({
