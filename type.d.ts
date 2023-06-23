@@ -3,3 +3,8 @@ type Profile = {
     name: string;
     picture: string;
 }
+
+type Prompt = {
+    prompt: string;
+    tag: string;
+}
