@@ -93,7 +93,7 @@ export default function Nav() {
                                         <Link
                                             className='dropdown_item'
                                             onClick={() => setToggleDropDown(false)}
-                                            href={"/profie"}
+                                            href={"/profile"}
                                         >
                                             My Profile
                                         </Link>
