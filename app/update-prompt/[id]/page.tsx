@@ -3,7 +3,6 @@ import React, { useEffect } from 'react'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Form from '@components/Form'
-import { useSession } from 'next-auth/react'
 export default function EditPrompt({ params: { id: promptId } }: { params: { id: string } }) {
     const [submitting, setSubmitting] = useState<boolean>(false)
     const [post, setPost] = useState<Prompt>({

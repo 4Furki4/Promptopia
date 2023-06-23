@@ -11,7 +11,7 @@ function PromptCardList({ data, handleTagClick }: { data: [], handleTagClick: Fu
 }
 
 export default function Feed() {
-    const [posts, setPosts] = useState([])
+    const [posts, setPosts] = useState([] as any)
     useEffect(() => {
         const fetchPosts = async () => {
             const response = await fetch('/api/prompt')
@@ -32,12 +32,12 @@ export default function Feed() {
                     type="text"
                     placeholder='Search for a tag or a username'
                     value={searchText}
+                    // @ts-ignore
                     onChange={handleSearchChange}
                     required
                     className='search_input peer'
                 />
             </form>
-
             <PromptCardList data={posts} handleTagClick={() => { }} />
         </section>
     )

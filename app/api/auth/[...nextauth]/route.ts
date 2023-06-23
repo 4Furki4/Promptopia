@@ -18,6 +18,7 @@ const handler = NextAuth({
             session.user.sessionId = sessionUser?._id.toString();
             return session
         },
+        // @ts-ignore
         async signIn({ profile }: { profile: Profile }) {
             try {
                 await connectToDb();

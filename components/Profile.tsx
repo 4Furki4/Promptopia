@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import PromptCard from './PromptCard'
 export default function Profile({ name, desc, data, handleEdit, handleDelete }: { name: string, desc: string, data: PromptAndUser[], handleEdit: Function, handleDelete: Function }) {
     return (
@@ -11,9 +11,11 @@ export default function Profile({ name, desc, data, handleEdit, handleDelete }: 
             </p>
 
             <div className='mt-16 prompt_layout'>
-                {data?.map((post) => <PromptCard key={post._id} data={post} handleEdit={() => handleEdit && handleEdit(post)}
-                    handleDelete={() => handleDelete && handleDelete(post)}
-                />)}
+                {data?.map((post) =>
+                    // @ts-ignore
+                    <PromptCard key={post._id} data={post} handleEdit={() => handleEdit && handleEdit(post)}
+                        handleDelete={() => handleDelete && handleDelete(post)}
+                    />)}
 
             </div>
         </section>

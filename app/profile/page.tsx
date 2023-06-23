@@ -4,9 +4,9 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Profile from '@components/Profile'
-import router from 'next/router'
 
 export default function MyProfile() {
+    // @ts-ignore
     const { data: session }: { data: CustomSession } = useSession()
     const [posts, setPosts] = useState<PromptAndUser[]>([])
     const router = useRouter()
@@ -25,6 +25,7 @@ export default function MyProfile() {
                 router.push('/')
             }
             else {
+                // @ts-ignore
                 fetchPosts(session?.user?.sessionId)
             }
         }

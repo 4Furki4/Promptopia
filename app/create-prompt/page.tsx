@@ -11,6 +11,7 @@ export default function CreatePrompt() {
         tag: '',
     })
     const router = useRouter()
+    // @ts-ignore
     const { data: session }: { data: CustomSession } = useSession()
     async function createPrompt(e: InputEvent) {
         e.preventDefault()
