@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react'
 import { usePathname, useRouter } from 'next/navigation'
 import Image from 'next/image'
 import path from 'path'
-export default function PromptCard({ data, handleTagClick }: { data: PromptAndUser, handleTagClick: Function }) {
+export default function PromptCard({ data, handleTagClick, handleEdit, handleDelete }: { data: PromptAndUser, handleTagClick: Function, handleEdit?: Function, handleDelete?: Function }) {
     function handleCopy() {
         const textToCopy = data.prompt
         navigator.clipboard.writeText(textToCopy)
@@ -57,12 +57,12 @@ export default function PromptCard({ data, handleTagClick }: { data: PromptAndUs
                 session?.user.sessionId === data?.creator._id && pathname === "/profile" &&
                 <div className='flex justify-end items-center gap-5 mt-5'>
                     <button className='font-inter text-sm green_gradient cursor-pointer'
-                    // onClick={handleEdit}
+                        onClick={() => handleEdit(data)}
                     >
                         Edit
                     </button>
                     <button className='font-inter text-sm orange_gradient cursor-pointer'
-                    // onClick={handleDelete}
+                        onClick={() => handleDelete(data._id)}
                     >
                         Delete
                     </button>

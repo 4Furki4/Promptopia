@@ -31,11 +31,23 @@ export default function MyProfile() {
         initializeUserSession()
     }, [])
 
-    function handleEdit() {
-
+    function handleEdit(post: PromptAndUser) {
+        router.push(`/update-prompt/${post._id}`)
     }
-    async function handleDelete() {
+    async function handleDelete(post: PromptAndUser) {
 
+        const hasConfirmed = confirm('Are you sure you want to delete this prompt?')
+        if (!hasConfirmed) return
+        try {
+            const response = await fetch(`/api/prompt/${post._id.toString()}`, {
+                method: 'DELETE',
+            })
+            if (response.ok) {
+                setPosts(posts.filter(post => post._id !== post._id))
+            }
+        } catch (error) {
+            console.error(error)
+        }
     }
     return (
         <Profile
