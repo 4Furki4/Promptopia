@@ -6,12 +6,12 @@ export const metadata: Metadata = {
     title: "Promptopia",
     description: "Discover and share ai prompts"
 }
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children, session }: { children: React.ReactNode, session: any }) {
+
     return (
         <html lang='en'>
             <body>
-
-                <Provider>
+                <Provider session={session}>
                     <div className='main'>
                         <div className="gradient" />
                     </div>
