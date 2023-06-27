@@ -12,12 +12,14 @@ function PromptCardList({ data, handleTagClick }: { data: PromptAndUser[], handl
 
 export default function Feed() {
     const [posts, setPosts] = useState<PromptAndUser[]>([])
-    const [searchedPosts, setSearchedPosts] = useState<PromptAndUser[]>(posts)
+    const [searchedPosts, setSearchedPosts] = useState<PromptAndUser[]>([])
+    const [searchType, setSearchType] = useState<'tag' | 'username' | 'prompt'>('prompt')
     useEffect(() => {
         const fetchPosts = async () => {
             const response = await fetch('/api/prompt')
             const data = await response.json() as PromptAndUser[]
             setPosts(data)
+            setSearchedPosts(data)
         }
         fetchPosts()
     }, [])
@@ -25,18 +27,32 @@ export default function Feed() {
     function handleSearchChange(e: InputEvent) {
         const { value } = e.target as HTMLInputElement
         setSearchText(value)
-        const regex = new RegExp(value, 'i')
-        if (value) {
-            const filteredPosts = posts.filter((post: PromptAndUser) => {
-                if (post.tag.match(regex) || post.prompt.match(regex)) { // search by title or description case-insensitive
-                    return true
-                }
-                return false
-            })
-            setSearchedPosts(filteredPosts)
-        } else {
+        if (value === '') {
             setSearchedPosts(posts)
+            setSearchText(value)
+            return
         }
+        const filteredPosts = posts.filter((post) => {
+            switch (searchType) {
+                case "prompt":
+                    if (post.prompt.toLowerCase().includes(value.toLowerCase())) {
+                        return true
+                    }
+                    break;
+                case "tag":
+                    if (post.tag.includes(value)) {
+                        return true
+                    }
+                    break;
+                case "username":
+                    if (post.creator.username.toLowerCase().includes(value.toLowerCase())) {
+                        return true
+                    }
+                default:
+                    break;
+            }
+        })
+        setSearchedPosts(filteredPosts)
     }
 
     return (
