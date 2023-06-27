@@ -1,6 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react'
 import PromptCard from './PromptCard'
+import { set } from 'mongoose'
 
 function PromptCardList({ data, handleTagClick }: { data: PromptAndUser[], handleTagClick: Function }) {
     return (
@@ -55,18 +56,28 @@ export default function Feed() {
         setSearchedPosts(filteredPosts)
     }
 
+    function handleTypeSelect(e: React.ChangeEvent<HTMLSelectElement>) {
+        const { value } = e.target
+        if (value === 'prompt' || value === 'tag' || value === 'username') setSearchType(value)
+    }
+
     return (
         <section className='feed'>
-            <form className='relative w-full flex-center'>
+            <form className='relative w-full flex-center max-sm:block'>
                 <input
                     type="text"
-                    placeholder='Search for a tag or a username'
+                    placeholder={`Search for a ${searchType}`}
                     value={searchText}
                     // @ts-ignore
                     onChange={handleSearchChange}
                     required
                     className='search_input peer'
                 />
+                <select className='search_input--type' onChange={(e) => handleTypeSelect(e)}>
+                    <option value="prompt">Prompt</option>
+                    <option value="tag">Tag</option>
+                    <option value="username">Username</option>
+                </select>
             </form>
             <PromptCardList data={searchedPosts} handleTagClick={() => { }} />
         </section>
