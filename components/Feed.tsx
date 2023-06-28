@@ -18,7 +18,7 @@ export default function Feed() {
         const fetchPosts = async () => {
             const response = await fetch('/api/prompt', {
                 next: {
-                    revalidate: 30
+                    revalidate: 1
                 }
             })
             const data = await response.json() as PromptAndUser[]
