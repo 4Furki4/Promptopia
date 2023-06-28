@@ -1,4 +1,5 @@
 "use client"
+export const revalidate = 1
 import React, { useEffect, useState } from 'react'
 import PromptCard from './PromptCard'
 
@@ -17,9 +18,7 @@ export default function Feed() {
     useEffect(() => {
         const fetchPosts = async () => {
             const response = await fetch('/api/prompt', {
-                next: {
-                    revalidate: 1
-                }
+                cache: 'no-cache'
             })
             const data = await response.json() as PromptAndUser[]
             setPosts(data)
