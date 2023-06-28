@@ -16,7 +16,11 @@ export default function Feed() {
     const [searchType, setSearchType] = useState<'tag' | 'username' | 'prompt'>('prompt')
     useEffect(() => {
         const fetchPosts = async () => {
-            const response = await fetch('/api/prompt')
+            const response = await fetch('/api/prompt', {
+                next: {
+                    revalidate: 30
+                }
+            })
             const data = await response.json() as PromptAndUser[]
             setPosts(data)
             setSearchedPosts(data)
