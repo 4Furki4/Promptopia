@@ -60,6 +60,11 @@ export default function Feed() {
         const { value } = e.target
         if (value === 'prompt' || value === 'tag' || value === 'username') setSearchType(value)
     }
+    function handleTagClick(tag: string) {
+        setSearchText(tag)
+        const filteredPosts = posts.filter((post) => post.tag.includes(tag))
+        setSearchedPosts(filteredPosts)
+    }
 
     return (
         <section className='feed'>
@@ -79,7 +84,7 @@ export default function Feed() {
                     <option value="username">Username</option>
                 </select>
             </form>
-            <PromptCardList data={searchedPosts} handleTagClick={() => { }} />
+            <PromptCardList data={searchedPosts} handleTagClick={handleTagClick} />
         </section>
     )
 }
