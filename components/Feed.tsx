@@ -16,15 +16,17 @@ export default function Feed() {
     const [searchedPosts, setSearchedPosts] = useState<PromptAndUser[]>([])
     const [searchType, setSearchType] = useState<'tag' | 'username' | 'prompt'>('prompt')
     useEffect(() => {
-        const fetchPosts = async () => {
+        async function getPosts() {
             const response = await fetch('/api/prompt', {
-                cache: 'no-cache'
+                next: {
+                    revalidate: 1
+                }
             })
             const data = await response.json() as PromptAndUser[]
             setPosts(data)
             setSearchedPosts(data)
         }
-        fetchPosts()
+        getPosts()
     }, [])
     const [searchText, setSearchText] = useState('')
     function handleSearchChange(e: InputEvent) {
