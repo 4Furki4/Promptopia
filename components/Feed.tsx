@@ -11,9 +11,25 @@ function PromptCardList({ data, handleTagClick }: { data: PromptAndUser[], handl
     )
 }
 
-export default function Feed({ posts, searchedPosts, setSearchedPosts }: { posts: PromptAndUser[], searchedPosts: PromptAndUser[], setSearchedPosts: Function }) {
+export default function Feed() {
     const [searchType, setSearchType] = useState<'tag' | 'username' | 'prompt'>('prompt')
     const [searchText, setSearchText] = useState('')
+    const [posts, setPosts] = useState<PromptAndUser[]>([])
+    const [searchedPosts, setSearchedPosts] = useState<PromptAndUser[]>([])
+
+    useEffect(() => {
+        async function getPosts() {
+            const response = await fetch('/api/prompt', {
+                next: {
+                    revalidate: 1
+                }
+            })
+            const data = await response.json() as PromptAndUser[]
+            setPosts(data)
+            setSearchedPosts(data)
+        }
+        getPosts()
+    }, [])
     function handleSearchChange(e: InputEvent) {
         const { value } = e.target as HTMLInputElement
         setSearchText(value)
