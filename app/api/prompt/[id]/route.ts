@@ -1,6 +1,7 @@
 import { connectToDb } from "@utils/database";
 import { NextRequest, NextResponse } from "next/server";
 import Prompt from "@models/prompt";
+import { Tag } from "@models/tag";
 
 export async function GET(request: NextRequest, { params: { id } }: { params: { id: string } }) {
     try {
@@ -24,7 +25,7 @@ export async function GET(request: NextRequest, { params: { id } }: { params: { 
 }
 
 export async function PATCH(request: NextRequest, { params: { id } }: { params: { id: string } }) {
-    const { prompt, tag } = await request.json();
+    const { prompt, tags } = await request.json();
     try {
         await connectToDb()
         const existingPrompt = await Prompt.findById(id);
@@ -34,14 +35,21 @@ export async function PATCH(request: NextRequest, { params: { id } }: { params: 
                 status: 404,
             });
         }
+        console.log(existingPrompt)
         existingPrompt.prompt = prompt;
-        existingPrompt.tag = tag;
+        existingPrompt.tags = [];
+        tags.map((tag: string) => {
+            const newTag = new Tag({
+                tag: tag
+            })
+            existingPrompt.tags.push(newTag)
+        })
         await existingPrompt.save();
         return new NextResponse(JSON.stringify(existingPrompt), {
             status: 200,
         });
-    } catch (error) {
-        return new NextResponse("Internal server error", {
+    } catch (error: any) {
+        return new NextResponse(error.message, {
             status: 500,
         });
     }

@@ -1,14 +1,20 @@
 import { connectToDb } from '@utils/database'
 import Prompt from '@models/prompt';
+import { Tag } from '@models/tag';
 
 export async function POST(req: any) {
-    const { userId, prompt, tag } = await req.json();
+    const { userId, prompt, tags } = await req.json();
     try {
         await connectToDb();
+        const tagsArray = tags.map((tag: string) => {
+            return new Tag({
+                tag: tag
+            })
+        })
         const newPrompt = new Prompt({
             creator: userId,
             prompt: prompt,
-            tag: tag
+            tags: tagsArray
         })
 
         await newPrompt.save();

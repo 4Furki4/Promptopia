@@ -6,9 +6,9 @@ import Form from '@components/Form'
 import { useSession } from 'next-auth/react'
 export default function CreatePrompt() {
     const [submitting, setSubmitting] = useState<boolean>(false)
-    const [post, setPost] = useState<Prompt>({
+    const [post, setPost] = useState<InputPromt>({
         prompt: '',
-        tag: '',
+        tags: '',
     })
     const router = useRouter()
     // @ts-ignore
@@ -17,14 +17,15 @@ export default function CreatePrompt() {
         e.preventDefault()
 
         setSubmitting(true)
-
+        const tagsArray = post.tags?.split(' ').map((tag) => tag.trim())
+        console.log(tagsArray);
         try {
             const response = await fetch("/api/prompt/new", {
                 method: "POST",
                 body: JSON.stringify({
                     prompt: post.prompt,
                     userId: session?.user.sessionId,
-                    tag: post.tag,
+                    tags: tagsArray,
                 })
             })
 

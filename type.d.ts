@@ -6,7 +6,11 @@ type Profile = {
 
 type Prompt = {
     prompt: string;
-    tag: string;
+    tags: string[];
+}
+type InputPromt = {
+    prompt: string;
+    tags: string;
 }
 type CustomSession = {
     user: {
@@ -16,11 +20,15 @@ type CustomSession = {
         image: string,
     }
 }
+type Tag = {
+    _id: string,
+    tag: string,
+}
 
 type PromptAndUser = {
     _id: string,
     prompt: string,
-    tag: string,
+    tags: Tag[],
     creator: {
         _id: string,
         email: string,
