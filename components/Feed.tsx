@@ -1,12 +1,11 @@
 "use client"
 import React, { useEffect, useState } from 'react'
 import PromptCard from './PromptCard'
-import { set } from 'mongoose'
 
 function PromptCardList({ data, handleTagClick }: { data: PromptAndUser[], handleTagClick: Function }) {
     return (
         <div className='mt-16 prompt_layout'>
-            {data.map((post: any) => <PromptCard key={post._id} data={post} handleTagClick={handleTagClick} />)}
+            {data.map((post: PromptAndUser) => <PromptCard key={post._id} data={post} handleTagClick={handleTagClick} />)}
         </div>
     )
 }
@@ -41,7 +40,8 @@ export default function Feed() {
                     }
                     break;
                 case "tag":
-                    if (post.tag.includes(value)) {
+                    const tag = post.tags.find((tag) => tag.tag.toLowerCase().includes(value.toLowerCase()))
+                    if (tag) {
                         return true
                     }
                     break;
@@ -62,7 +62,8 @@ export default function Feed() {
     }
     function handleTagClick(tag: string) {
         setSearchText(tag)
-        const filteredPosts = posts.filter((post) => post.tag.includes(tag))
+        setSearchType('tag')
+        const filteredPosts = posts.filter((post) => post.tags.find((tagObj) => tagObj.tag === tag))
         setSearchedPosts(filteredPosts)
     }
 
@@ -78,7 +79,7 @@ export default function Feed() {
                     required
                     className='search_input peer'
                 />
-                <select className='search_input--type' onChange={(e) => handleTypeSelect(e)}>
+                <select className='search_input--type' value={searchType} onChange={(e) => handleTypeSelect(e)}>
                     <option value="prompt">Prompt</option>
                     <option value="tag">Tag</option>
                     <option value="username">Username</option>

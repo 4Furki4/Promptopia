@@ -48,11 +48,16 @@ export default function PromptCard({ data, handleTagClick, handleEdit, handleDel
             <p className='my-4 font-satoshi text-sm text-gray-700'>
                 {data.prompt}
             </p>
-            <p className='font-inter text-sm blue_gradient cursor-pointer'
-                onClick={() => handleTagClick && handleTagClick(data.tag)}
-            >
-                {data.tag}
-            </p>
+            {
+                data?.tags && data.tags.map((tag, index) => (
+                    <span key={tag._id} className='font-inter text-sm blue_gradient cursor-pointer mr-1'
+                        onClick={() => handleTagClick && handleTagClick(tag.tag)}
+                    >
+                        {tag.tag}
+                    </span>
+                ))
+            }
+
 
             {
                 session?.user.sessionId === data?.creator._id && pathname === "/profile" &&

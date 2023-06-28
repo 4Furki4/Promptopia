@@ -1,10 +1,11 @@
 import React from 'react'
 import Link from 'next/link'
 export default function Form({ type, post, setPost, submitting, handleSubmit }:
+
     {
         type: string,
-        post: Prompt,
-        setPost: React.Dispatch<React.SetStateAction<Prompt>>,
+        post: InputPromt,
+        setPost: React.Dispatch<React.SetStateAction<InputPromt>>,
         submitting: boolean,
         handleSubmit: any
     }
@@ -42,8 +43,8 @@ export default function Form({ type, post, setPost, submitting, handleSubmit }:
                     </span>
 
                     <input
-                        value={post.tag}
-                        onChange={(e) => setPost({ ...post, tag: e.target.value })}
+                        value={post.tags}
+                        onChange={(e) => setPost({ ...post, tags: e.target.value })}
                         placeholder='#tag'
                         required
                         className='form_input'
